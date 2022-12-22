@@ -33,7 +33,7 @@ fun `Catching and retrying`() {
     // Catching everything else: java.lang.Exception: Thrown inside
 }
 
-fun `Returning value be delegation`() {
+fun `Returning value by delegation`() {
     val message by trying {
         execute()
         "Success"
@@ -76,10 +76,10 @@ fun `Uncaught exception`() {
         println("Catching specific exceptions only: $e")
     }.throwIfNotCaught() // We need to call throwIfNotCaught in case exception was not caught.
 
-    // Exception in thread "main" java.lang.Exception
+    // Exception in thread "multicatch.main" java.lang.Exception
     // at javalikemulticatch.JavaLikeMulticatchKt.Uncaught exception(JavaLikeMulticatchExamples.kt:..)
-    // at javalikemulticatch.JavaLikeMulticatchKt.main(JavaLikeMulticatchExamples.kt:..)
-    // at javalikemulticatch.JavaLikeMulticatchKt.main(JavaLikeMulticatchExamples.kt)
+    // at javalikemulticatch.JavaLikeMulticatchKt.multicatch.main(JavaLikeMulticatchExamples.kt:..)
+    // at javalikemulticatch.JavaLikeMulticatchKt.multicatch.main(JavaLikeMulticatchExamples.kt)
 }
 
 fun main() {
@@ -87,7 +87,7 @@ fun main() {
 
     `Catching and retrying`().also { println() }
 
-    `Returning value be delegation`().also { println() }
+    `Returning value by delegation`().also { println() }
 
     `Returning value by assignment`().also { println() }
 

@@ -1,7 +1,6 @@
 package multicatch
 
 import kotlin.reflect.KClass
-import kotlin.reflect.KProperty
 
 /**
  * Catches specified [exceptions] and handles them in [transform] function.
@@ -89,11 +88,4 @@ inline fun <R, T, E> Result<T>.recoverCatching(
     return runCatching {
         recover(singleException, transform).getOrThrow()
     }
-}
-
-/**
- * Gets value by delegation. No necessity to call [Result.getOrThrow] function.
- */
-operator fun <R> Result<R>.getValue(thisRef: Any?, property: KProperty<*>): R {
-    return getOrThrow() // TODO: remove
 }
