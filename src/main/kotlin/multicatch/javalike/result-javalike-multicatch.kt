@@ -1,4 +1,4 @@
-package javalikemulticatch
+package multicatch.javalike
 
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty

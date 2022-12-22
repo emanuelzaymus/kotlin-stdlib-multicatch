@@ -1,6 +1,6 @@
 @file:Suppress("FunctionName")
 
-package multicatch
+package multicatch.kotlin
 
 fun `Recovery from specific exceptions`() {
     runCatching {
@@ -58,10 +58,10 @@ fun `Uncaught exception`() {
         println("Catching one exception: $e")
     }.getOrThrow() // We need to call getOrThrow() so that the uncaught exception is thrown.
 
-    // Exception in thread "multicatch.main" java.lang.Exception
-    // at multicatch.MulticatchExamplesKt.Uncaught exception(MulticatchExamples.kt:..)
-    // at multicatch.MulticatchExamplesKt.main(MulticatchExamples.kt:..)
-    // at multicatch.MulticatchExamplesKt.main(MulticatchExamples.kt)
+    // Exception in thread "multicatch.kotlin.main" java.lang.Exception
+    // at multicatch.kotlin.MulticatchExamplesKt.`Uncaught exception`(MulticatchExamples.kt:..)
+    // at multicatch.kotlin.MulticatchExamplesKt.main(MulticatchExamples.kt:..)
+    // at multicatch.kotlin.MulticatchExamplesKt.main(MulticatchExamples.kt)
 }
 
 fun main() {

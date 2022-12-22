@@ -1,6 +1,6 @@
 @file:Suppress("FunctionName")
 
-package javalikemulticatch
+package multicatch.javalike
 
 fun `Catching specific exceptions`() {
     trying {
@@ -76,10 +76,10 @@ fun `Uncaught exception`() {
         println("Catching specific exceptions only: $e")
     }.throwIfNotCaught() // We need to call throwIfNotCaught in case exception was not caught.
 
-    // Exception in thread "multicatch.main" java.lang.Exception
+    // Exception in thread "multicatch.kotlin.main" java.lang.Exception
     // at javalikemulticatch.JavaLikeMulticatchKt.Uncaught exception(JavaLikeMulticatchExamples.kt:..)
-    // at javalikemulticatch.JavaLikeMulticatchKt.multicatch.main(JavaLikeMulticatchExamples.kt:..)
-    // at javalikemulticatch.JavaLikeMulticatchKt.multicatch.main(JavaLikeMulticatchExamples.kt)
+    // at javalikemulticatch.JavaLikeMulticatchKt.multicatch.kotlin.main(JavaLikeMulticatchExamples.kt:..)
+    // at javalikemulticatch.JavaLikeMulticatchKt.multicatch.kotlin.main(JavaLikeMulticatchExamples.kt)
 }
 
 fun main() {

@@ -1,4 +1,4 @@
-package multicatch
+package multicatch.kotlin
 
 import kotlin.reflect.KClass
 
