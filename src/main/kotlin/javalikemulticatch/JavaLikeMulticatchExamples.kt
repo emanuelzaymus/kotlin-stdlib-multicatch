@@ -77,9 +77,9 @@ fun `Uncaught exception`() {
     }.throwIfNotCaught() // We need to call throwIfNotCaught in case exception was not caught.
 
     // Exception in thread "main" java.lang.Exception
-    // at javalikemulticatch.JavaLikeMulticatchKt.Uncaught exception(JavaLikeMulticatch.kt:..)
-    // at javalikemulticatch.JavaLikeMulticatchKt.main(JavaLikeMulticatch.kt:..)
-    // at javalikemulticatch.JavaLikeMulticatchKt.main(JavaLikeMulticatch.kt)
+    // at javalikemulticatch.JavaLikeMulticatchKt.Uncaught exception(JavaLikeMulticatchExamples.kt:..)
+    // at javalikemulticatch.JavaLikeMulticatchKt.main(JavaLikeMulticatchExamples.kt:..)
+    // at javalikemulticatch.JavaLikeMulticatchKt.main(JavaLikeMulticatchExamples.kt)
 }
 
 fun main() {
