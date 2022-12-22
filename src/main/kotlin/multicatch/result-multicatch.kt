@@ -4,7 +4,14 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
 /**
- * Catches specified [exceptions]. If no exception is specified catches everything.
+ * Catches specified [exceptions] and handles them in [transform] function.
+ * If no exception is specified any exception will be caught.
+ *
+ * Returns original value if [this] is [Result.isSuccess], or transforms received exception using [transform] function
+ * and encapsulates it in [Result.failure] if [this] is [Result.isFailure].
+ *
+ * Note, that this function rethrows any [Throwable] exception raised by [transform] function.
+ * See [recoverCatching] for an alternative that encapsulates exceptions.
  */
 inline fun <R, T : R> Result<T>.recover(
     vararg exceptions: KClass<out Throwable>,
@@ -19,8 +26,13 @@ inline fun <R, T : R> Result<T>.recover(
 }
 
 /**
- * Catches [singleException] exception and handles it in typed [transform].
- * See [recover].
+ * Catches [singleException] and handles it in typed [transform] function.
+ *
+ * Returns original value if [this] is [Result.isSuccess], or transforms received exception using [transform] function
+ * and encapsulates it in [Result.failure] if [this] is [Result.isFailure].
+ *
+ * Note, that this function rethrows any [Throwable] exception raised by [transform] function.
+ * See [recoverCatching] for an alternative that encapsulates exceptions.
  */
 inline fun <R, T, E> Result<T>.recover(
     singleException: KClass<E>,
@@ -39,25 +51,35 @@ inline fun <R, T, E> Result<T>.recover(
 }
 
 /**
- * Catches specified [exceptions] while processing any exception caused by [transform].
+ * Catches specified [exceptions] and handles them in typed [transform] function.
  * If no exception is specified catches everything.
+ *
+ * Returns original value if [this] is [Result.isSuccess], or transforms received exception using [transform] function
+ * and encapsulates it in [Result.failure] if [this] is [Result.isFailure].
+ *
+ * This function catches any [Throwable] exception raised by [transform] function and encapsulates it as a failure.
+ * See [recover] for an alternative that rethrows exceptions.
  */
 inline fun <R, T : R> Result<T>.recoverCatching(
     vararg exceptions: KClass<out Throwable>,
     transform: (exception: Throwable) -> R
 ): Result<R> {
-    if (exceptions.isEmpty()) {
-        return recoverCatching(transform)
-    }
-
-    return runCatching {
-        recover(*exceptions, transform = transform).getOrThrow()
-    }
+    return if (exceptions.isEmpty()) {
+        recoverCatching(transform)
+    } else
+        runCatching {
+            recover(*exceptions, transform = transform).getOrThrow()
+        }
 }
 
 /**
- * Catches [singleException] exception and handles it in typed [transform] while catching exception that could be raised in [transform].
- * See [recover].
+ * Catches [singleException] and handles it in typed [transform] function.
+ *
+ * Returns original value if [this] is [Result.isSuccess], or transforms received exception using [transform] function
+ * and encapsulates it in [Result.failure] if [this] is [Result.isFailure].
+ *
+ * This function catches any [Throwable] exception raised by [transform] function and encapsulates it as a failure.
+ * See [recover] for an alternative that rethrows exceptions.
  */
 inline fun <R, T, E> Result<T>.recoverCatching(
     singleException: KClass<E>,
@@ -70,7 +92,7 @@ inline fun <R, T, E> Result<T>.recoverCatching(
 }
 
 /**
- * Gets value by delegation. No necessity call [Result.getOrThrow] function.
+ * Gets value by delegation. No necessity to call [Result.getOrThrow] function.
  */
 operator fun <R> Result<R>.getValue(thisRef: Any?, property: KProperty<*>): R {
     return getOrThrow() // TODO: remove

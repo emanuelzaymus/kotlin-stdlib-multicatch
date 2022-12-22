@@ -4,7 +4,7 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
 /**
- * Calls [throwingBlock] in which can be raised an Exception and returns result encapsulated in [Result].
+ * Calls [throwingBlock] in which can be raised an [Exception] and returns result encapsulated in [Result].
  * See [runCatching].
  */
 inline fun <R> trying(throwingBlock: () -> R): Result<R> {
@@ -12,7 +12,8 @@ inline fun <R> trying(throwingBlock: () -> R): Result<R> {
 }
 
 /**
- * Catches any specified exception and handles it in [catchBlock]. If no exception is specified any exception will be caught.
+ * Catches specified [exceptions] and handles them in [catchBlock].
+ * If no exception is specified any exception will be caught.
  * See [recover].
  */
 inline fun <R, T : R> Result<T>.catch(
@@ -67,7 +68,8 @@ inline fun <R, T : R> Result<T>.catchTrying(
 }
 
 /**
- * Catches [single] exception and handles it in typed [catchBlock] while catching exception that could be raised in [catchBlock].
+ * Catches [single] exception and handles it in typed [catchBlock] while
+ * catching exception that could be raised in [catchBlock].
  * See [catch].
  */
 inline fun <R, T, E> Result<T>.catchTrying(
