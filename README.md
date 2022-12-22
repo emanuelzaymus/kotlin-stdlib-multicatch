@@ -5,6 +5,8 @@
 Attempt to solve the issue of **branching based on the type of the exception**
 that was raised in `try-catch` expression on in the `runCatching { }` function.
 
+---
+
 ### Current exception-type branching situation in Kotlin
 
 ```kotlin
