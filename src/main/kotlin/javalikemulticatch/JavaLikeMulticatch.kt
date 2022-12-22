@@ -33,9 +33,7 @@ fun `Catching and retrying`() {
     // Catching everything else: java.lang.Exception: Thrown inside
 }
 
-fun `Returning value`() {
-    fun execute(): Unit = throw Exception()
-
+fun `Returning value be delegation`() {
     val message by trying {
         execute()
         "Success"
@@ -55,10 +53,26 @@ fun `Returning value`() {
     // Totally failed
 }
 
+fun `Returning value by assignment`() {
+    val result = trying {
+        calculate()
+    }.catch(IllegalStateException::class, IndexOutOfBoundsException::class) { e ->
+        println("Catching specific exceptions only: $e")
+        -1
+    }.catchTrying { e ->
+        println("Catching everything else: $e")
+        -2
+    }.getOrThrow() // getOrThrow() is alternative to 'by delegation' call
+
+    println("Result: $result")
+    // Catching everything else: java.lang.ArithmeticException
+    // Result: -2
+}
+
 fun `Uncaught exception`() {
     trying {
         throw Exception()
-    }.catch(IllegalStateException::class, IndexOutOfBoundsException::class) { e ->
+    }.catchTrying(IllegalStateException::class) { e: IllegalStateException ->
         println("Catching specific exceptions only: $e")
     }.throwIfNotCaught() // We need to call throwIfNotCaught in case exception was not caught.
 
@@ -73,7 +87,12 @@ fun main() {
 
     `Catching and retrying`().also { println() }
 
-    `Returning value`().also { println() }
+    `Returning value be delegation`().also { println() }
+
+    `Returning value by assignment`().also { println() }
 
     `Uncaught exception`().also { println() }
 }
+
+private fun execute(): Unit = throw Exception()
+private fun calculate(): Int = throw ArithmeticException()
