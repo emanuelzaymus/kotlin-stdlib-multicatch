@@ -59,9 +59,9 @@ fun `Uncaught exception`() {
     }.getOrThrow() // We need to call getOrThrow() so that the uncaught exception is thrown.
 
     // Exception in thread "multicatch.kotlin.main" java.lang.Exception
-    // at multicatch.kotlin.MulticatchExamplesKt.`Uncaught exception`(MulticatchExamples.kt:..)
-    // at multicatch.kotlin.MulticatchExamplesKt.main(MulticatchExamples.kt:..)
-    // at multicatch.kotlin.MulticatchExamplesKt.main(MulticatchExamples.kt)
+    //     at multicatch.kotlin.MulticatchExamplesKt.`Uncaught exception`(MulticatchExamples.kt:..)
+    //     at multicatch.kotlin.MulticatchExamplesKt.main(MulticatchExamples.kt:..)
+    //     at multicatch.kotlin.MulticatchExamplesKt.main(MulticatchExamples.kt)
 }
 
 fun main() {

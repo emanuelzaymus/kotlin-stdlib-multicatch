@@ -77,9 +77,9 @@ fun `Uncaught exception`() {
     }.throwIfNotCaught() // We need to call throwIfNotCaught in case exception was not caught.
 
     // Exception in thread "multicatch.kotlin.main" java.lang.Exception
-    // at javalikemulticatch.JavaLikeMulticatchKt.Uncaught exception(JavaLikeMulticatchExamples.kt:..)
-    // at javalikemulticatch.JavaLikeMulticatchKt.multicatch.kotlin.main(JavaLikeMulticatchExamples.kt:..)
-    // at javalikemulticatch.JavaLikeMulticatchKt.multicatch.kotlin.main(JavaLikeMulticatchExamples.kt)
+    //     at javalikemulticatch.JavaLikeMulticatchKt.Uncaught exception(JavaLikeMulticatchExamples.kt:..)
+    //     at javalikemulticatch.JavaLikeMulticatchKt.multicatch.kotlin.main(JavaLikeMulticatchExamples.kt:..)
+    //     at javalikemulticatch.JavaLikeMulticatchKt.multicatch.kotlin.main(JavaLikeMulticatchExamples.kt)
 }
 
 fun main() {
