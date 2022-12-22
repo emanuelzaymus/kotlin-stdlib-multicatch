@@ -84,7 +84,7 @@ runCatching {
 
 ```kotlin
 val result: Int = runCatching {
-    calculate()
+    calculate() // throws ArithmeticException
 }.recover(IllegalStateException::class, IndexOutOfBoundsException::class) { e ->
     println("Catching specific exceptions only: $e")
     -1
