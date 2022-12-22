@@ -1,3 +1,5 @@
+@file:Suppress("FunctionName")
+
 package javalikemulticatch
 
 fun `Catching specific exceptions`() {
@@ -53,7 +55,7 @@ fun `Returning value`() {
     // Totally failed
 }
 
-fun `Uncatch exception`() {
+fun `Uncaught exception`() {
     trying {
         throw Exception()
     }.catch(IllegalStateException::class, IndexOutOfBoundsException::class) { e ->
@@ -61,7 +63,7 @@ fun `Uncatch exception`() {
     }.throwIfNotCaught() // We need to call throwIfNotCaught in case exception was not caught.
 
     // Exception in thread "main" java.lang.Exception
-    // at javalikemulticatch.JavaLikeMulticatchKt.Uncatch exception(JavaLikeMulticatch.kt:..)
+    // at javalikemulticatch.JavaLikeMulticatchKt.Uncaught exception(JavaLikeMulticatch.kt:..)
     // at javalikemulticatch.JavaLikeMulticatchKt.main(JavaLikeMulticatch.kt:..)
     // at javalikemulticatch.JavaLikeMulticatchKt.main(JavaLikeMulticatch.kt)
 }
@@ -73,5 +75,5 @@ fun main() {
 
     `Returning value`().also { println() }
 
-    `Uncatch exception`().also { println() }
+    `Uncaught exception`().also { println() }
 }

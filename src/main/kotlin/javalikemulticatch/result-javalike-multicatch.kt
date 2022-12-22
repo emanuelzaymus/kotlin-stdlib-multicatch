@@ -3,11 +3,14 @@ package javalikemulticatch
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
-inline fun <T> trying(throwingBlock: () -> T): Result<T> {
+inline fun <R> trying(throwingBlock: () -> R): Result<R> {
     return runCatching(throwingBlock)
 }
 
-inline fun <T> Result<T>.catch(vararg exceptions: KClass<out Throwable>, catchBlock: (Throwable) -> T): Result<T> {
+inline fun <R, T : R> Result<T>.catch(
+    vararg exceptions: KClass<out Throwable>,
+    catchBlock: (Throwable) -> R
+): Result<R> {
     exceptionOrNull()?.let { e ->
         if (exceptions.isEmpty() || exceptions.any { it.isInstance(e) }) {
             return recover(catchBlock)
@@ -16,7 +19,11 @@ inline fun <T> Result<T>.catch(vararg exceptions: KClass<out Throwable>, catchBl
     return this
 }
 
-inline fun <E : Throwable, T> Result<T>.catch(single: KClass<E>, catchBlock: (E) -> T): Result<T> {
+inline fun <R, T, E> Result<T>.catch(
+    single: KClass<E>,
+    catchBlock: (E) -> R
+): Result<R> where T : R,
+                   E : Throwable {
     exceptionOrNull()?.let { e ->
         if (single.isInstance(e)) {
             return recover {
@@ -28,21 +35,21 @@ inline fun <E : Throwable, T> Result<T>.catch(single: KClass<E>, catchBlock: (E)
     return this
 }
 
-infix fun <T> Result<T>.catch(catchBlock: (Throwable) -> T): Result<T> {
-    return catch(Throwable::class, catchBlock = catchBlock)
+infix fun <R, T : R> Result<T>.catch(catchBlock: (Throwable) -> R): Result<R> {
+    return catch(*emptyArray(), catchBlock = catchBlock)
 }
 
-inline fun <T> Result<T>.catchTrying(
+inline fun <R, T : R> Result<T>.catchTrying(
     vararg exceptions: KClass<out Throwable>,
-    catchBlock: (Throwable) -> T
-): Result<T> {
+    catchBlock: (Throwable) -> R
+): Result<R> {
     return runCatching {
         catch(*exceptions, catchBlock = catchBlock).getOrThrow()
     }
 }
 
-inline infix fun <T> Result<T>.catchTrying(catchBlock: (Throwable) -> T): Result<T> {
-    return catchTrying(Throwable::class, catchBlock = catchBlock)
+inline infix fun <R, T : R> Result<T>.catchTrying(catchBlock: (Throwable) -> R): Result<R> {
+    return catchTrying(*emptyArray(), catchBlock = catchBlock)
 }
 
 inline infix fun <T> Result<T>.finally(finallyBlock: () -> Unit): Result<T> {
@@ -54,6 +61,6 @@ fun <T> Result<T>.throwIfNotCaught() {
     getOrThrow()
 }
 
-operator fun <T> Result<T>.getValue(thisRef: Any?, property: KProperty<*>): T {
+operator fun <R> Result<R>.getValue(thisRef: Any?, property: KProperty<*>): R {
     return getOrThrow()
 }
