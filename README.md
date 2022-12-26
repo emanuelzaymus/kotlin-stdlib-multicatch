@@ -14,10 +14,10 @@ val result: Int = try {
     calculate()
 } catch (e: IllegalStateException) {
     println("Catching specific exception: $e") // <-- Duplication
-    -1                                      // <--
+    -1                                         // <--
 } catch (e: IndexOutOfBoundsException) {
     println("Catching specific exception: $e") // <-- Duplication
-    -1                                      // <--
+    -1                                         // <--
 } catch (e: Throwable) {
     println("Catching everything else: $e")
     -2
