@@ -13,10 +13,10 @@ that was raised in `try-catch` expression on in the `runCatching { }` function.
 val result: Int = try {
     calculate()
 } catch (e: IllegalStateException) {
-    println("Catching more exceptions: $e") // <-- Duplication
+    println("Catching specific exception: $e") // <-- Duplication
     -1                                      // <--
 } catch (e: IndexOutOfBoundsException) {
-    println("Catching more exceptions: $e") // <-- Duplication
+    println("Catching specific exception: $e") // <-- Duplication
     -1                                      // <--
 } catch (e: Throwable) {
     println("Catching everything else: $e")
