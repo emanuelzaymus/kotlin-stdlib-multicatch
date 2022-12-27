@@ -4,7 +4,6 @@
  */
 
 @file:Suppress("UNCHECKED_CAST", "RedundantVisibilityModifier", "NOTHING_TO_INLINE", "unused")
-@file:OptIn(ExperimentalContracts::class)
 
 package multicatch.stdlib
 
@@ -66,6 +65,20 @@ public value class Result<out T> @PublishedApi internal constructor(
             is Failure -> value.exception
             else -> null
         }
+
+    // functions that cannot be extensions because of generics
+
+    public inline fun <reified E : Throwable> recover(transform: (exception: E) -> @UnsafeVariance T): Result<T> {
+//        contract {
+//            callsInPlace(transform, InvocationKind.AT_MOST_ONCE)
+//        }
+        exceptionOrNull()?.let { e ->
+            if (E::class.isInstance(e)) {
+                return success(transform(e as E))
+            }
+        }
+        return this
+    }
 
     /**
      * Returns a string `Success(v)` if this instance represents [success][Result.isSuccess]
@@ -188,9 +201,9 @@ public inline fun <T> Result<T>.getOrThrow(): T {
 //@InlineOnly
 @SinceKotlin("1.3")
 public inline fun <R, T : R> Result<T>.getOrElse(onFailure: (exception: Throwable) -> R): R {
-    contract {
-        callsInPlace(onFailure, InvocationKind.AT_MOST_ONCE)
-    }
+//    contract {
+//        callsInPlace(onFailure, InvocationKind.AT_MOST_ONCE)
+//    }
     return when (val exception = exceptionOrNull()) {
         null -> value as T
         else -> onFailure(exception)
@@ -222,10 +235,10 @@ public inline fun <R, T> Result<T>.fold(
     onSuccess: (value: T) -> R,
     onFailure: (exception: Throwable) -> R
 ): R {
-    contract {
-        callsInPlace(onSuccess, InvocationKind.AT_MOST_ONCE)
-        callsInPlace(onFailure, InvocationKind.AT_MOST_ONCE)
-    }
+//    contract {
+//        callsInPlace(onSuccess, InvocationKind.AT_MOST_ONCE)
+//        callsInPlace(onFailure, InvocationKind.AT_MOST_ONCE)
+//    }
     return when (val exception = exceptionOrNull()) {
         null -> onSuccess(value as T)
         else -> onFailure(exception)
@@ -245,9 +258,9 @@ public inline fun <R, T> Result<T>.fold(
 //@InlineOnly
 @SinceKotlin("1.3")
 public inline fun <R, T> Result<T>.map(transform: (value: T) -> R): Result<R> {
-    contract {
-        callsInPlace(transform, InvocationKind.AT_MOST_ONCE)
-    }
+//    contract {
+//        callsInPlace(transform, InvocationKind.AT_MOST_ONCE)
+//    }
     return when {
         isSuccess -> Result.success(transform(value as T))
         else -> Result(value)
@@ -282,9 +295,9 @@ public inline fun <R, T> Result<T>.mapCatching(transform: (value: T) -> R): Resu
 //@InlineOnly
 @SinceKotlin("1.3")
 public inline fun <R, T : R> Result<T>.recover(transform: (exception: Throwable) -> R): Result<R> {
-    contract {
-        callsInPlace(transform, InvocationKind.AT_MOST_ONCE)
-    }
+//    contract {
+//        callsInPlace(transform, InvocationKind.AT_MOST_ONCE)
+//    }
     return when (val exception = exceptionOrNull()) {
         null -> this
         else -> Result.success(transform(exception))
@@ -317,9 +330,9 @@ public inline fun <R, T : R> Result<T>.recoverCatching(transform: (exception: Th
 //@InlineOnly
 @SinceKotlin("1.3")
 public inline fun <T> Result<T>.onFailure(action: (exception: Throwable) -> Unit): Result<T> {
-    contract {
-        callsInPlace(action, InvocationKind.AT_MOST_ONCE)
-    }
+//    contract {
+//        callsInPlace(action, InvocationKind.AT_MOST_ONCE)
+//    }
     exceptionOrNull()?.let { action(it) }
     return this
 }
@@ -331,9 +344,9 @@ public inline fun <T> Result<T>.onFailure(action: (exception: Throwable) -> Unit
 ////@InlineOnly
 @SinceKotlin("1.3")
 public inline fun <T> Result<T>.onSuccess(action: (value: T) -> Unit): Result<T> {
-    contract {
-        callsInPlace(action, InvocationKind.AT_MOST_ONCE)
-    }
+//    contract {
+//        callsInPlace(action, InvocationKind.AT_MOST_ONCE)
+//    }
     if (isSuccess) action(value as T)
     return this
 }
